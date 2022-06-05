@@ -19,7 +19,7 @@ python mobaxterm2remmina.py --with-passwords
 
 The profiles will be exported to `./exported` locally, so you have to copy all these exported remmina files to your Linux host in `~/local/share/remmina` directory.
 
-> NOTE: Stored passwords will be remove from the profile files upon Remmina initialization and will be transfered to host's integrated keyring.
+> NOTE: Stored passwords (DES3 encrypted and base64 encoded) will be removed from the .remmina files upon Remmina initialization and will be transfered to host's integrated keyring.
 
 **The tool will preserve the group hierarchy of MobaXterm on Remmina**, so your sessions will be organized as they were.
 
