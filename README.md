@@ -37,3 +37,7 @@ This tool is currently compatible with SSH and RDP only.
 
 VNC compatibility isn't implemented yet.
 SSH jump hosts or gateways cannot be exported to Remmina as well as the private keys for the authentication.
+
+## LICENSE
+
+`mobaxterm_to_remmina` is available under the MIT license. See the LICENSE file for more info.
