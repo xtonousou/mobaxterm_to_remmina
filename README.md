@@ -5,16 +5,22 @@ Here is a handy tool to convert your sessions to Remmina profiles with their pas
 
 ## Usage
 
-Export Remmina profiles without stored passwords:
+Firstly, export the sessions from MobaXterm on MS Windows:
 
-```bash
-python mobaxterm2remmina.py
+![Export MobaXterm Configuration](assets/moba_export_config.png)
+
+Open up a Terminal or cmd and execute the commands below.
+
+Convert to Remmina profiles without stored passwords:
+
+```powershell
+python.exe mobaxterm2remmina.py ".\MobaXterm configuration (2022-06-05 04.15.06).mobaconf"  # replace the filename of course
 ```
 
-Export Remmina profiles with stored passwords (you will be asked for MobaXterm master password and Remmina's secret which is located in ~/.config/remmina/remmina.pref "secret field"):
+Convert to profiles with stored passwords (you will be asked for MobaXterm master password and Remmina's secret which is located in ~/.config/remmina/remmina.pref "secret field"):
 
-```bash
-python mobaxterm2remmina.py --with-passwords
+```powershell
+python.exe .\mobaxterm2remmina.py ".\MobaXterm configuration (2022-06-05 04.15.06).mobaconf" --with-passwords  # replace the filename of course
 ```
 
 The profiles will be exported to `./exported` locally, so you have to copy all these exported remmina files to your Linux host in `~/local/share/remmina` directory.
