@@ -173,6 +173,7 @@ class SSH(object):
         self.domain = kwargs.get('username')
         self.password = kwargs.get('password')
         self.group = kwargs.get('group')
+        self.theme = kwargs.get('theme')
         self.protocol = 'SSH'
     
     def get_remmina_conf(self):
@@ -199,7 +200,7 @@ class SSH(object):
             'postcommand': '',
             'server': self.ip,
             'disablepasswordstoring': 0,
-            'ssh_color_scheme': 6,
+            'ssh_color_scheme': self.theme,
             'audiblebell': 0,
             'ssh_tunnel_username': '',
             'sshsavesession': 0,
@@ -363,6 +364,10 @@ class Converter(object):
         self.config = ConfigParserMultiOpt()
         self.config.read(sys.argv[1])
 
+        self.theme_dir = '/usr/share/remmina/theme'
+        self.theme_def = 'Linux'
+        self.theme_map = {t.replace('.colors', '').lower(): i for i, t in enumerate(['Linux', 'Tango', 'Gruvbox', 'Solarized Dark', 'Solarized Light', 'XTerm', 'Custom', ] + sorted(os.listdir(self.theme_dir)))}
+
         self.with_password = False
         self.mobaxterm_safe, self.remmina_safe = None, None
 
@@ -374,6 +379,12 @@ class Converter(object):
                 remmina_secret = getpass('Enter Remmina secret: ')
                 self.remmina_safe = RemminaCryptoSafe(remmina_secret)
         
+        if sys.argv[-2] in ('--color-theme', '--theme', '--color-scheme', '--colors', ):
+            self.theme = sys.argv[-1]
+            if self.theme.lower() not in self.theme_map.keys():
+                print('Warning', self.theme, 'cannot be found. Using a default one instead')
+                self.theme = self.theme_def
+
         self.export_dir = './exported'
         self.export_file = '{group}_{protocol}_{name}_{ip}.remmina'
         self.moba_proto_map = {
@@ -462,7 +473,8 @@ class Converter(object):
                                         port=parts[2],
                                         username=username,
                                         group=path,
-                                        password=password)
+                                        password=password,
+                                        theme=self.theme)
 
                     filename = self.export_file.format(group=path.lower().replace('/', '-'),
                                                        protocol=str(session),
