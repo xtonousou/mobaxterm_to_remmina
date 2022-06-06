@@ -177,6 +177,10 @@ class SSH(object):
         self.protocol = 'SSH'
     
     def get_remmina_conf(self):
+        server = self.ip
+        if int(self.port) != 22:
+            server = self.ip + ':' + str(self.port)
+
         config = configparser.ConfigParser()
         config['remmina'] = {
             'ssh_tunnel_loopback': 0,
@@ -198,7 +202,7 @@ class SSH(object):
             'ssh_auth': 0,
             'ignore-tls-errors': 1,
             'postcommand': '',
-            'server': self.ip,
+            'server': server,
             'disablepasswordstoring': 0,
             'ssh_color_scheme': self.theme,
             'audiblebell': 0,
@@ -261,6 +265,10 @@ class RDP(object):
             self.domain = ''
     
     def get_remmina_conf(self):
+        server = self.ip
+        if int(self.port) != 3389:
+            server = self.ip + ':' + str(self.port)
+
         config = configparser.ConfigParser()
         config['remmina'] = {
             'password': self.password,
@@ -283,7 +291,7 @@ class RDP(object):
             'postcommand': '',
             'multitransport': 0,
             'group': self.group,
-            'server': self.ip,
+            'server': server,
             'ssh_tunnel_certfile': '',
             'glyph-cache': 0,
             'ssh_tunnel_enabled': 0,
