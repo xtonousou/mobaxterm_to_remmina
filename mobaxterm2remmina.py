@@ -32,7 +32,7 @@ class RemminaCryptoSafe(object):
     """
     def __init__(self, secret: str):
         self.secret = base64.b64decode(secret)
-    
+
     def encrypt(self, plaintext: str) -> str:
         pad = 8 - len(plaintext) % 8
         plaintext += pad * chr(0)
@@ -374,6 +374,7 @@ class Converter(object):
 
         self.theme_dir = '/usr/share/remmina/theme'
         self.theme_def = 'Linux'
+        self.theme = self.theme_def
         self.theme_map = {t.replace('.colors', '').lower(): i for i, t in enumerate(['Linux', 'Tango', 'Gruvbox', 'Solarized Dark', 'Solarized Light', 'XTerm', 'Custom', ] + sorted(os.listdir(self.theme_dir)))}
 
         self.with_password = False
@@ -383,10 +384,10 @@ class Converter(object):
             self.with_password = True if sys.argv[2].lower() in ('--decrypt', '--with-passwords', '--passwords', ) else False
             if self.with_password is True:
                 mobaxterm_master_password = getpass('Enter MobaXterm master password: ')
-                self.mobaxterm_safe = MobaXtermCryptoSafe(mobaxterm_master_password.encode('ansi'))
+                self.mobaxterm_safe = MobaXtermCryptoSafe(mobaxterm_master_password.encode('cp1251'))
                 remmina_secret = getpass('Enter Remmina secret: ')
                 self.remmina_safe = RemminaCryptoSafe(remmina_secret)
-        
+
         if sys.argv[-2] in ('--color-theme', '--theme', '--color-scheme', '--colors', ):
             self.theme = sys.argv[-1]
             if self.theme.lower() not in self.theme_map.keys():
